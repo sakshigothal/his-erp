@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "463846466031",
+    "project_id": "his-erp",
+    "storage_bucket": "his-erp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463846466031:android:ee86223767be394751961a",
+        "android_client_info": {
+          "package_name": "com.infoway.erp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463846466031-tq2kd25ih0rapp5erja087fetbh4ojce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.infoway.erp",
+            "certificate_hash": "982c3a2efcbafcfa53fb43be6609763c0df3a564"
+          }
+        },
+        {
+          "client_id": "463846466031-k5k17sid3igk7ib8i8r8oupi8jhpv0nf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhlJpdbmTdklV0CEWgP217N6zKFIW35Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463846466031-k5k17sid3igk7ib8i8r8oupi8jhpv0nf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
