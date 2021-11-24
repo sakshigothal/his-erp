@@ -52,184 +52,223 @@ class _TableExState extends State<TableEx> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: ListView(
-          shrinkWrap: true,
-          children: [
-            GestureDetector(
-              onTap: () {
-                "${sopdata?.dataAgr}" != "null"
-                    ? onepressButton()
-                    : showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "Not Yet Due...",
-                                  style: TextStyle(color: Colors.red),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("OK"))
-                              ],
-                            ),
-                          );
-                        });
-              },
-              child: Column(
-                children: [
-                  showcard(
-                    "Agreement",
-                  ),
-                ],
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  "${sopdata?.dataAgr}" != "null"
+                      ? onepressButton()
+                      : showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    "Not Yet Due...",
+                                    style: TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"))
+                                ],
+                              ),
+                            );
+                          });
+                },
+                child: Column(
+                  children: [
+                    showcard(
+                      "Agreement",
+                    ),
+                  ],
+                ),
               ),
-            ),
-            GestureDetector(
-              child: Column(
-                children: [
-                  showcard(
-                    "Other Charges",
-                  ),
-                ],
+              GestureDetector(
+                child: Column(
+                  children: [
+                    showcard(
+                      "Other Charges",
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  "${sopdata?.dataOthchg}" != "null"
+                      ? secondPress()
+                      : showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    "Not Yet Due...",
+                                    style: TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("OK"))
+                                ],
+                              ),
+                            );
+                          });
+                },
               ),
-              onTap: () {
-                "${sopdata?.dataOthchg}" != "null"
-                    ? secondPress()
-                    : showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  "Not Yet Due...",
-                                  style: TextStyle(color: Colors.red),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("OK"))
-                              ],
-                            ),
-                          );
-                        });
+              GestureDetector(
+                onTap: () {
+                  ThirdOnpress();
+                },
+                child: Column(
+                  children: [
+                    showcard("GST"),
+                  ],
+                ),
+              ),
+              GestureDetector(onTap: (){
+                FourthOnpress();
               },
-            ),
-            Column(
-              children: [
-                showcardGST(),
-              ],
-            ),
-            Column(
-              children: [
-                showcardTDS(),
-              ],
-            ),
-          ],
+                child: Column(
+                  children: [
+                    showcard("TDS"),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ));
   }
 
-  showcardGST() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30), color: Colors.blue[900]),
-        height: 200,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
+  ThirdOnpress() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50))),
+              height: 650,
               child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Material(
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    selected: true,
-                    selectedTileColor: Colors.grey[300],
-                    hoverColor: Colors.red,
-                    enabled: true,
-                    title: Column(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Due ",
-                              style: TextStyle(fontSize: 15),
+                        Material(
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            selected: true,
+                            selectedTileColor: Colors.grey[300],
+                            hoverColor: Colors.red,
+                            enabled: true,
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Due "), Text("22222")],
+                                ),
+                                Divider(thickness: 1,),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Paid "), Text("22222")],
+                                ),
+                                Divider(thickness: 1,),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Balance "), Text("22222")],
+                                )
+                              ],
                             ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
-                        ),
-                        Divider(
-                          thickness: 1,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Paid ",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
-                        ),
-                        Divider(
-                          thickness: 1,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Balance ",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    "GST ",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
+              ));
+        });
+  }
+
+  FourthOnpress(){
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50))),
+              height: 650,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Material(
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
+                            selected: true,
+                            selectedTileColor: Colors.grey[300],
+                            hoverColor: Colors.red,
+                            enabled: true,
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Due "), Text("22222")],
+                                ),
+                                Divider(thickness: 1,),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Paid "), Text("22222")],
+                                ),
+                                Divider(thickness: 1,),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text("Balance "), Text("22222")],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+                ),
+              ));
+        });
   }
 
   showcard(String txt) {
@@ -256,95 +295,6 @@ class _TableExState extends State<TableEx> {
               )
             ],
           )),
-    );
-  }
-
-  showcardTDS() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30), color: Colors.blue[900]),
-        height: 200,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Material(
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    selected: true,
-                    selectedTileColor: Colors.grey[300],
-                    hoverColor: Colors.red,
-                    enabled: true,
-                    title: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Due ",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
-                        ),
-                        Divider(
-                          thickness: 1,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Paid ",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
-                        ),
-                        Divider(
-                          thickness: 1,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Balance ",
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            Text("${profileData?.obookngDt}"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    "TDS ",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 

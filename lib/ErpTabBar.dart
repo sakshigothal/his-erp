@@ -58,181 +58,184 @@ class _homepageState extends State<homepage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: PopupMenuButton(
-          child: Image.asset(
-            "assets/infoway2.png",
-            fit: BoxFit.contain,
-            height: 32,
-          ),
-          itemBuilder: (BuildContext bc) => [
-            PopupMenuItem(
-              child: Text("Send Request"),
-              onTap: () {},
+    return  Scaffold(
+        appBar: AppBar(
+          leading: PopupMenuButton(
+            child: Image.asset(
+              "assets/infoway2.png",
+              fit: BoxFit.contain,
+              height: 32,
             ),
-            PopupMenuItem(
-              child: Text("Settings"),
-              onTap: () {},
-            ),
-            PopupMenuItem(
-              child: Text("Logout"),
-              onTap: () async {
-                SharedPreferences pref = await SharedPreferences.getInstance();
-                pref.remove("log");
-                pref.remove("un");
-                pref.remove("PS");
-                pref.remove("profile");
-
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (ctx) => RoastedHome()));
-              },
-            )
-          ],
-        ),
-        // automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 5,
-            ),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "HIS-ERP",
-                    style: TextStyle(color: Color(0XFF06074F)),
-                  ),
-                  AnimatedTextKit(animatedTexts: [
-                    ColorizeAnimatedText(
-                      'Premise Owners Dashboard',
-                      textStyle: colorizeTextStyle,
-                      colors: colorizeColors,
-                    ),
-                  ]),
-                ],
+            itemBuilder: (BuildContext bc) => [
+              PopupMenuItem(
+                child: Text("Send Request"),
+                onTap: () {},
               ),
-            ),
-          ],
-        ),
-        actions: [NotificationBadge()],
-        backgroundColor: Colors.white,
-      ),
-      body: Container(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 4.5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 60,
-                    width: 60,
-                    child: Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: Image.asset(
-                        "assets/icon1.png",
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "${profile?.oflatNo}",
-                    style: TextStyle(
-                        fontFamily: 'Gilroy1',
-                        fontSize: 32,
-                        color: Color(0XFFe08d6b)),
-                  ),
-                ],
+              PopupMenuItem(
+                child: Text("Settings"),
+                onTap: () {},
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "${profile?.oownerNam}",
-                    style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        fontSize: 20,
-                        color: Color(0XFF7a7b7f)),
-                  ),
-                ],
-              ),
-              Stack(
-                children: [
-                  Container(
-                    color: Color(0XFF2d2f2e),
-                    height: 25,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "${profile?.bbuildNam}",
-                          style: TextStyle(
-                              fontFamily: 'Gilroy2',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0XFFd5ba4e)),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "${profile?.projnam}",
-                          style: TextStyle(
-                              fontFamily: 'Gilroy2',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0XFFd5ba4e)),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+              PopupMenuItem(
+                child: Text("Logout"),
+                onTap: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.clear();
+                  // pref.remove("log");
+                  // pref.remove("un");
+                  // pref.remove("PS");
+                  // pref.remove("profile");
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (ctx) => RoastedHome()));
+                },
               )
             ],
           ),
-          decoration: BoxDecoration(color: Color(0XFF202427)),
+          // automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 5,
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "HIS-ERP",
+                      style: TextStyle(color: Color(0XFF06074F)),
+                    ),
+                    AnimatedTextKit(animatedTexts: [
+                      ColorizeAnimatedText(
+                        'Premise Owners Dashboard',
+                        textStyle: colorizeTextStyle,
+                        colors: colorizeColors,
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [NotificationBadge()],
+          backgroundColor: Colors.white,
         ),
-        TabBar(
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white,
-          controller: _tabController,
-          tabs: <Widget>[
-            Tab(
-              child: Text("Profile",
-                  style: TextStyle(color: Colors.white, fontSize: 15)),
-            ),
-            Tab(
-              child: Text("Statements",
-                  style: TextStyle(color: Colors.white, fontSize: 15)),
-            ),
-            Tab(
-              child: Text("Documents",
-                  style: TextStyle(color: Colors.white, fontSize: 15)),
-            ),
-          ],
-        ),
-        Expanded(
-          child: TabBarView(controller: _tabController, children: <Widget>[
-            HomepageErp(),
-            TableEx(),
-            DownloadFile(),
-          ]),
-        ),
-      ])),
+        body: Container(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 4.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Image.asset(
+                              "assets/icon1.png",
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "${profile?.oflatNo}",
+                          style: TextStyle(
+                              fontFamily: 'Gilroy1',
+                              fontSize: 32,
+                              color: Color(0XFFe08d6b)),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${profile?.oownerNam}",
+                          style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontSize: 20,
+                              color: Color(0XFF7a7b7f)),
+                        ),
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Container(
+                          color: Color(0XFF2d2f2e),
+                          height: 25,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "${profile?.bbuildNam}",
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy2',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0XFFd5ba4e)),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                "${profile?.projnam}",
+                                style: TextStyle(
+                                    fontFamily: 'Gilroy2',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0XFFd5ba4e)),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                decoration: BoxDecoration(color: Color(0XFF202427)),
+              ),
+              TabBar(
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white,
+                controller: _tabController,
+                tabs: <Widget>[
+                  Tab(
+                    child: Text("Profile",
+                        style: TextStyle(color: Colors.white, fontSize: 15)),
+                  ),
+                  Tab(
+                    child: Text("Statements",
+                        style: TextStyle(color: Colors.white, fontSize: 15)),
+                  ),
+                  Tab(
+                    child: Text("Documents",
+                        style: TextStyle(color: Colors.white, fontSize: 15)),
+                  ),
+                ],
+              ),
+              Expanded(
+                child:
+                    TabBarView(controller: _tabController, children: <Widget>[
+                  HomepageErp(),
+                  TableEx(),
+                  DownloadFile(),
+                ]),
+              ),
+            ])),
     );
   }
 
@@ -326,4 +329,7 @@ class _homepageState extends State<homepage>
       print("error");
     }, parameter: parameters);
   }
+
+  
+
 }

@@ -106,20 +106,17 @@ class _DownloadFileState extends State<DownloadFile> {
                                 var path =
                                     "https://his-erp.com/${common.docLink}";
                                 var arr = path.split(".");
-                                var outputPath = "$_localPath/${doc?.data?[index].docName}.${arr.last}";
+                                var outputPath =
+                                    "$_localPath/${doc?.data?[index].docName}.${arr.last}";
 
                                 try {
                                   var respp =
                                       await dio.download(path, outputPath);
                                   print("Status Code ${respp.statusCode}");
                                   if (respp.statusCode == 200) {
-                                    if (arr.last == "pdf") {
-                                      final _result =
-                                          await OpenFile.open(outputPath);
-                                      print(_result.message);
-                                    } else {
-                                      Image.network(outputPath);
-                                    }
+                                    final _result =
+                                        await OpenFile.open(outputPath);
+                                    print(_result.message);
                                   } else {
                                     print("Error opening file");
                                   }

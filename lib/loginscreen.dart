@@ -4,7 +4,6 @@ import 'package:connectivity/connectivity.dart';
 import 'package:erp/api/APIManager.dart';
 import 'package:erp/common/common.dart';
 import 'package:erp/models/loginmodel.dart';
-import 'package:erp/models/notfiModel.dart';
 import 'package:erp/models/profilemain.dart';
 import 'package:erp/models/sopmodel.dart';
 import 'package:erp/webviewex.dart';
@@ -13,7 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ErpTabBar.dart';
-import 'models/docmodel.dart';
 
 class RoastedHome extends StatefulWidget {
   @override
@@ -164,9 +162,7 @@ class _RoastedHomeState extends State<RoastedHome> {
                                 prefs.setString("log", clinetid.text);
                                 prefs.setString("un", email.text);
                                 prefs.setString("PS", psscode.text);
-
                                 getLogin();
-
                                 loginApiCall();
                               },
                               child: Text("LOGIN",
@@ -226,7 +222,6 @@ class _RoastedHomeState extends State<RoastedHome> {
         // userSetUp();
         LoginModel llresp = response;
         loginData = llresp;
-
         print("Alert Dialog response is ${loginData}");
         showDialog(
             context: context,
@@ -237,15 +232,16 @@ class _RoastedHomeState extends State<RoastedHome> {
                   content: Text("Last Login was on ${loginData?.lastLogin}"),
                   actions: [
                     DialogButton(
-                      child: Text("OK",style: TextStyle(color: Colors.white),),
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white),
+                      ),
                       onPressed: () {
                         Navigator.pop(context);
                         profileApiCall();
                         sopapi();
                         // docapi();
                         // notificationApi();
-
-                        //8108747643 //mp
                       },
                     )
                   ]);
@@ -258,8 +254,18 @@ class _RoastedHomeState extends State<RoastedHome> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text("${loginData?.message}"),
-              );
+                  title: Text("${loginData?.message}"),
+                  actions: [
+                    DialogButton(
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ]);
             });
       }
     }, (error) {
@@ -328,30 +334,6 @@ class _RoastedHomeState extends State<RoastedHome> {
   //         Navigator.pushReplacement(
   //             context, MaterialPageRoute(builder: (ctx) => homepage()));
   //       }
-  //       print("success ${docdata?.data?.length}");
-  //     }
-  //   }, (error) {
-  //     print("error");
-  //   }, parameter: parameters);
-  // }
-
-  // notificationApi() {
-  //   Map<String, String> parameters = {
-  //     'clientid': clinetid.text,
-  //     'username': email.text,
-  //     'password': psscode.text,
-  //   };
-  //   APIManager().apiRequest(context, API.notification, (response) async {
-  //     if (response != null) {
-  //       NotificationModel resp = response;
-  //       if (resp.isSuccess == 1) {
-  //         notdata = resp;
-  //         SharedPreferences pref = await SharedPreferences.getInstance();
-  //         pref.setString("notif", jsonEncode(resp));
-  //         Navigator.pushReplacement(
-  //             context, MaterialPageRoute(builder: (ctx) => homepage()));
-  //       }
-  //       print("success ${docdata?.data?.length}");
   //     }
   //   }, (error) {
   //     print("error");
@@ -374,7 +356,10 @@ class _RoastedHomeState extends State<RoastedHome> {
         connectivityResult != ConnectivityResult.wifi) {
       return Alert(context: context, title: "No Internet Connection", buttons: [
         DialogButton(
-          child: Text("OK",style: TextStyle(color: Colors.white),),
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white),
+          ),
           onPressed: () {
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (ctx) => RoastedHome()));
