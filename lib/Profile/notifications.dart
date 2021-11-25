@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:badges/badges.dart';
@@ -22,6 +23,21 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   NotificationModel? not;
   profile_main? profile;
+  Map<String, String> parameters={};
+  var data;
+  loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("log");
+  }
+
+  setData() {
+      loadData().then((value) {
+        setState(() {
+          data = value;
+        });
+      });
+    }
+
   static const colorizeColors = [
     Colors.purple,
     Colors.blue,
@@ -36,7 +52,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void initState() {
     super.initState();
-
+setData();
     profileApiCall();
     not = notdata;
   }
@@ -105,6 +121,7 @@ class _NotificationPageState extends State<NotificationPage> {
           IconButton(
               onPressed: () {
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=>homepage(),),);
+                
               },
               icon: Icon(
                 Icons.arrow_back,
@@ -191,17 +208,18 @@ class _NotificationPageState extends State<NotificationPage> {
               color: Colors.blue[900],
             ),
             onPressed: () {
-              notificationApi();
-
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (ctx) => NotificationPage()));
+              // parameters["clientid"]=data;
+                         
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (ctx) => NotificationPage()));
+                  //  notificationApi();
             }));
   }
 
   notificationApi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> parameters = {
-      'clientid': "${prefs.getString("log")}",
+    parameters = {
+      'clientid': 'clientid' == '' ? data :"${prefs.getString("log")}",
       'username': "${prefs.getString("un")}",
       'password': "${prefs.getString("PS")}",
     };

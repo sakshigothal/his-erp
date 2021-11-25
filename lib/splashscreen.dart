@@ -19,30 +19,44 @@ class Splashsceen extends StatefulWidget {
 
 class _SplashsceenState extends State<Splashsceen> {
   profile_main? profile;
+var data;
+   loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("log");
+  }
+
+  setData() {
+      loadData().then((value) {
+        setState(() {
+          data = value;
+        });
+      });
+    }
   @override
   void initState() {
     super.initState();
+    setData();
     Future.delayed(Duration(seconds: 5), () async {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      if (pref.getString('profile') != null &&
-          pref.getString('sop') != null 
-          // && pref.getString('docs') != null  
-          && pref.getString('notif')!= null
-          ) {
+      // if (pref.getString('profile') != null &&
+      //     pref.getString('sop') != null &&
+      //     pref.getString('docs') != null &&
+      //     pref.getString('notif') != null) {
         print("Data ${pref.getString('profile')}");
         print("${notdata?.data?[0].nMessage}");
-        profileData =
-            profile_main.fromJson(jsonDecode(pref.getString('profile')!));
-        sopdata = Sopmodel.fromJson(jsonDecode(pref.getString("sop")!));
+        // profileData =
+        //     profile_main.fromJson(jsonDecode(pref.getString('profile')!));
+        // sopdata = Sopmodel.fromJson(jsonDecode(pref.getString("sop")!));
         // docdata = Documents.fromJson(jsonDecode(pref.getString("docs")!));
-        notdata=NotificationModel.fromJson(jsonDecode(pref.getString('notif')!));
+        // notdata =
+        //     NotificationModel.fromJson(jsonDecode(pref.getString('notif')!));
 
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (ctx) => homepage()));
+      // } else {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => homepage()));
-      } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (ctx) => RoastedHome()));
-      }
+            context, MaterialPageRoute(builder: (ctx) => RoastedHome(saveD: data,)));
+      // }
     });
   }
 

@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:erp/Profile/notifications.dart';
 import 'package:erp/api/APIManager.dart';
 import 'package:erp/common/common.dart';
+import 'package:erp/models/docmodel.dart';
 import 'package:erp/models/loginmodel.dart';
+import 'package:erp/models/notfiModel.dart';
 import 'package:erp/models/profilemain.dart';
 import 'package:erp/models/sopmodel.dart';
 import 'package:erp/webviewex.dart';
@@ -14,6 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ErpTabBar.dart';
 
 class RoastedHome extends StatefulWidget {
+  var saveD;
+  RoastedHome({Key? key, this.saveD}) : super(key: key);
   @override
   _RoastedHomeState createState() => _RoastedHomeState();
 }
@@ -25,8 +30,7 @@ class _RoastedHomeState extends State<RoastedHome> {
     Colors.yellow,
     Colors.red,
   ];
-  var saveD;
-  var save;
+  var spdata;
   bool visible = true;
   static const colorizeTextStyle = TextStyle(
     fontSize: 20.0,
@@ -41,9 +45,16 @@ class _RoastedHomeState extends State<RoastedHome> {
   @override
   void initState() {
     super.initState();
-    getLogin();
+    CheckInternet();
     savedlogin();
+    setData();
   }
+
+  loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("log");
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,14 +101,20 @@ class _RoastedHomeState extends State<RoastedHome> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "ClientID",
-                            style: TextStyle(
-                                fontSize: 16.0, color: Color(0xff06074f)),
+                          Visibility(
+                            visible: spdata != 'NA' ? !visible : visible,
+                            child: Text(
+                              "ClientID" ,
+                              style: TextStyle(
+                                  fontSize: 16.0, color: Color(0xff06074f)),
+                            ),
                           ),
-                          TextFormField(
-                            controller: clinetid ,
-                            decoration: InputDecoration(),
+                          Visibility(
+                            visible: spdata != 'NA' ? !visible : visible,
+                            child: TextFormField(
+                              controller: clinetid,
+                              decoration: InputDecoration(),
+                            ),
                           ),
                           SizedBox(
                             height: 5,
@@ -159,12 +176,14 @@ class _RoastedHomeState extends State<RoastedHome> {
                                   borderRadius: BorderRadius.circular(26.0)),
                               color: Colors.white,
                               onPressed: () async {
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                prefs.setString("log", clinetid.text);
-                                prefs.setString("un", email.text);
-                                prefs.setString("PS", psscode.text);
-                                getLogin();
+                                // SharedPreferences prefs =
+                                //     await SharedPreferences.getInstance();
+                                // prefs.setString("log", clinetid.text);
+                                // prefs.setString("un", email.text);
+                                // prefs.setString("PS", psscode.text);
+                                clinetid.text = spdata;
+                                print("Data is $spdata");
+                                CheckInternet();
                                 loginApiCall();
                               },
                               child: Text("LOGIN",
@@ -212,9 +231,10 @@ class _RoastedHomeState extends State<RoastedHome> {
     );
   }
 
-  loginApiCall() {
+  loginApiCall() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> parameters = {
-      'clientid': clinetid.text,
+      'clientid': "${prefs.getString("log")}",
       'username': email.text,
       'password': psscode.text,
     };
@@ -244,8 +264,8 @@ class _RoastedHomeState extends State<RoastedHome> {
                         Navigator.pop(context);
                         profileApiCall();
                         sopapi();
-                        // docapi();
-                        // notificationApi();
+                        docapi();
+                        notificationApi();
                       },
                     )
                   ]);
@@ -322,39 +342,72 @@ class _RoastedHomeState extends State<RoastedHome> {
     }, parameter: parameters);
   }
 
-  // docapi() {
-  //   Map<String, String> parameters = {
-  //     'clientid': clinetid.text,
-  //     'username': email.text,
-  //     'password': psscode.text,
-  //   };
-  //   APIManager().apiRequest(context, API.info, (response) async {
-  //     if (response != null) {
-  //       Documents resp = response;
-  //       if (resp.isSuccess == 1) {
-  //         docdata = resp;
-  //         SharedPreferences pref = await SharedPreferences.getInstance();
-  //         pref.setString("docs", jsonEncode(resp));
-  //         Navigator.pushReplacement(
-  //             context, MaterialPageRoute(builder: (ctx) => homepage()));
-  //       }
-  //     }
-  //   }, (error) {
-  //     print("error");
-  //   }, parameter: parameters);
-  // }
+  docapi() {
+    Map<String, String> parameters = {
+      'clientid': clinetid.text,
+      'username': email.text,
+      'password': psscode.text,
+    };
+    APIManager().apiRequest(context, API.info, (response) async {
+      if (response != null) {
+        Documents resp = response;
+        if (resp.isSuccess == 1) {
+          docdata = resp;
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("docs", jsonEncode(resp));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (ctx) => homepage()));
+        }
+      }
+    }, (error) {
+      print("error");
+    }, parameter: parameters);
+  }
+
+  notificationApi() {
+    Map<String, String> parameters = {
+      'clientid': clinetid.text,
+      'username': email.text,
+      'password': psscode.text,
+    };
+    APIManager().apiRequest(context, API.notification, (response) async {
+      if (response != null) {
+        NotificationModel resp = response;
+        if (resp.isSuccess == 1) {
+          // profileApiCall();
+          notdata = resp;
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("notif", jsonEncode(resp));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (ctx) => NotificationPage()));
+        }
+        print("success ${docdata?.data?.length}");
+      }
+    }, (error) {
+      print("error");
+    }, parameter: parameters);
+  }
 
   savedlogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.getString("log");
     prefs.getString("un");
     prefs.getString("PS");
-
     print(
-        "${prefs.getString("log")} , ${prefs.getString("un")},${prefs.getString("PS")}");
+        "check sharedpref values -  ${prefs.getString("log")} , ${prefs.getString("un")},${prefs.getString("PS")}");
   }
 
-  Future getLogin() async {
+  setData() {
+    loadData().then((value) {
+      setState(() {
+        if(spdata!=null){
+          spdata = value;
+        }else{ spdata = 'NA';}        
+      });
+    });
+  }
+
+  Future CheckInternet() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult != ConnectivityResult.mobile &&
         connectivityResult != ConnectivityResult.wifi) {

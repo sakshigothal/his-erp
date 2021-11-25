@@ -27,6 +27,19 @@ class _homepageState extends State<homepage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   profile_main? profile;
+   var data;
+  loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("log");
+  }
+
+  setData() {
+      loadData().then((value) {
+        setState(() {
+          data = value;
+        });
+      });
+    }
   static const colorizeColors = [
     Colors.purple,
     Colors.blue,
@@ -41,7 +54,7 @@ class _homepageState extends State<homepage>
   @override
   void initState() {
     super.initState();
-
+  setData();
     setState(() {
       profile = profileData;
       docapi();
@@ -305,7 +318,7 @@ class _homepageState extends State<homepage>
   docapi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> parameters = {
-      'clientid': "${prefs.getString("log")}",
+      'clientid': 'clientid' == '' ? data :"${prefs.getString("log")}",
       'username': "${prefs.getString("un")}",
       'password': "${prefs.getString("PS")}",
     };
