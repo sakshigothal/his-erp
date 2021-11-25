@@ -24,7 +24,6 @@ class _SplashsceenState extends State<Splashsceen> {
     super.initState();
     Future.delayed(Duration(seconds: 5), () async {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.clear();
       if (pref.getString('profile') != null &&
           pref.getString('sop') != null 
           // && pref.getString('docs') != null  

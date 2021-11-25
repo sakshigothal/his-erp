@@ -26,6 +26,8 @@ class _RoastedHomeState extends State<RoastedHome> {
     Colors.red,
   ];
   var saveD;
+  var save;
+  bool visible = true;
   static const colorizeTextStyle = TextStyle(
     fontSize: 20.0,
     // fontFamily: 'Horizon',
@@ -94,7 +96,7 @@ class _RoastedHomeState extends State<RoastedHome> {
                                 fontSize: 16.0, color: Color(0xff06074f)),
                           ),
                           TextFormField(
-                            controller: clinetid,
+                            controller: clinetid ,
                             decoration: InputDecoration(),
                           ),
                           SizedBox(
@@ -196,6 +198,8 @@ class _RoastedHomeState extends State<RoastedHome> {
                                   },
                                   child: Image.asset("assets/logo.png")),
                             ),
+                            SizedBox(height: 20),
+                            Text("Release 1.3.0")
                           ],
                         ),
                       )),
@@ -347,7 +351,7 @@ class _RoastedHomeState extends State<RoastedHome> {
     prefs.getString("PS");
 
     print(
-        "${prefs.getString("log")} , ${prefs.getString("un")},${prefs.getString("log")}");
+        "${prefs.getString("log")} , ${prefs.getString("un")},${prefs.getString("PS")}");
   }
 
   Future getLogin() async {

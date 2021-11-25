@@ -142,6 +142,7 @@ class _PdfurlState extends State<Pdfurl> {
               TextButton(
                   onPressed: () {
                     launch("https://his-erp.com/${common.docLink}");
+                    Navigator.pop(context);
                   },
                   child: Text("Ok")),
               TextButton(

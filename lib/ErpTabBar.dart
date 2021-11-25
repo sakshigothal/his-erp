@@ -78,13 +78,9 @@ class _homepageState extends State<homepage>
               PopupMenuItem(
                 child: Text("Logout"),
                 onTap: () async {
-                  SharedPreferences pref =
+                  SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  pref.clear();
-                  // pref.remove("log");
-                  // pref.remove("un");
-                  // pref.remove("PS");
-                  // pref.remove("profile");
+                  prefs.clear();
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (ctx) => RoastedHome()));
                 },
