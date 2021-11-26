@@ -164,6 +164,18 @@ class _DownloadFileState extends State<DownloadFile> {
       'username': "${prefs.getString("un")}",
       'password': "${prefs.getString("PS")}",
     };
+// common.gClientID= prefs.getString("log")!;
+//         common.gUserName=prefs.getString("un")!;
+//         common.gPassword=prefs.getString("PS")!;
+
+//     Map<String, String> parameters = {
+//       'clientid': common.gClientID,
+//       'username': common.gPassword,
+//       'password': common.gPassword,
+//     };
+
+
+
     APIManager().apiRequest(context, API.info, (response) async {
       if (response != null) {
         Documents resp = response;

@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Sop.dart';
 import 'package:badges/badges.dart';
 
+import 'splashscreen.dart';
+
 class homepage extends StatefulWidget {
   const homepage({Key? key}) : super(key: key);
 
@@ -90,12 +92,15 @@ class _homepageState extends State<homepage>
               ),
               PopupMenuItem(
                 child: Text("Logout"),
+                // onTap: () async {
+                //   SharedPreferences prefs =
+                //       await SharedPreferences.getInstance();
+                //   prefs.clear();
                 onTap: () async {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.clear();
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (ctx) => RoastedHome()));
+                      MaterialPageRoute(builder: (ctx) => Splashsceen()));
                 },
               )
             ],
