@@ -11,6 +11,7 @@ import 'package:erp/models/profilemain.dart';
 import 'package:erp/models/sopmodel.dart';
 import 'package:erp/webviewex.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -160,6 +161,9 @@ class _RoastedHomeState extends State<RoastedHome> {
                                 gClientID = prefs.getString("log");
                                 gUserName = email.text;
                                 gPassword = psscode.text;
+                                prefs.setString("un", gUserName);
+                                prefs.setString("PS", gPassword);
+
                                 CheckInternet();
                                 loginApiCall();
                               },
@@ -209,8 +213,7 @@ class _RoastedHomeState extends State<RoastedHome> {
   }
 
   loginApiCall() async {
-
-SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Map<String, String> parameters = {
       'clientid': gClientID,
@@ -222,14 +225,13 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
       LoginModel resp = response;
 
       if (resp.isSuccess == 1) {
-
         // common.gClientID= prefs.getString("log")!;
         // common.gUserName=prefs.getString("un")!;
         // common.gPassword=prefs.getString("PS")!;
 
         LoginModel llresp = response;
         loginData = llresp;
-        print("Alert Dialog response is ${loginData}");
+        print("**Alert Dialog response is ${loginData}");
         showDialog(
             context: context,
             builder: (context) {
@@ -246,9 +248,9 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
                       onPressed: () {
                         Navigator.pop(context);
                         profileApiCall();
-                        sopapi();
-                        docapi();
-                        notificationApi();
+                        // sopapi();
+                        // docapi();
+                        // notificationApi();
                       },
                     )
                   ]);
@@ -274,7 +276,12 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
             });
       }
     }, (error) {
-      print("error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('LOGIN API ERROR'),
+        ),
+      );
+      print("Login API Failed - error");
     }, parameter: parameters);
   }
 
@@ -285,8 +292,7 @@ SharedPreferences prefs = await SharedPreferences.getInstance();
     //   'password': gPassword,
     // };
 
-
-SharedPreferences prefs= await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Map<String, String> parameters = {
       'clientid': gClientID,
@@ -298,7 +304,7 @@ SharedPreferences prefs= await SharedPreferences.getInstance();
     APIManager().apiRequest(context, API.profile, (response) async {
       if (response != null) {
         profile_main resp = response;
-        if (resp.isSuccess == 1) {
+        if (resp.isSuccess == 1 ) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
           profileData = resp;
@@ -307,79 +313,92 @@ SharedPreferences prefs= await SharedPreferences.getInstance();
         }
       }
     }, (error) {
-      print("error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('PROFILE API ERROR'),
+        ),
+      );
+
+      print("PROFILE API ERROR ");
     }, parameter: parameters);
   }
 
-  sopapi() async {
-    Map<String, String> parameters = {
-      'clientid': gClientID,
-      'username': gUserName,
-      'password': gPassword,
-    };
-    APIManager().apiRequest(context, API.sop, (response) async {
-      if (response != null) {
-        Sopmodel resps = response;
-        if (resps.isSuccess == 1) {
-          sopdata = resps;
-          print(sopdata);
+  // sopapi() async {
+  //   Map<String, String> parameters = {
+  //     'clientid': gClientID,
+  //     'username': gUserName,
+  //     'password': gPassword,
+  //   };
+  //   APIManager().apiRequest(context, API.sop, (response) async {
+  //     if (response != null) {
+  //       Sopmodel resps = response;
+  //       if (resps.isSuccess == 1) {
+  //         sopdata = resps;
+  //         print(sopdata);
 
-          // SharedPreferences pref = await SharedPreferences.getInstance();
-          // pref.setString("sop", jsonEncode(resps));
-        }
-      }
-    }, (error) {
-      print("error");
-    }, parameter: parameters);
-  }
+  //         // SharedPreferences pref = await SharedPreferences.getInstance();
+  //         // pref.setString("sop", jsonEncode(resps));
+  //       }
+  //     }
+  //   }, (error) {
+  //     print("error");
+  //   }, parameter: parameters);
+  // }
 
-  docapi() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> parameters = {
-      'clientid': "${prefs.getString("log")}",
-      'username': "${prefs.getString("un")}",
-      'password': "${prefs.getString("PS")}",
-    };
-    APIManager().apiRequest(context, API.info, (response) async {
-      if (response != null) {
-        Documents resp = response;
-        if (resp.isSuccess == 1) {
-          docdata = resp;
-          // SharedPreferences pref = await SharedPreferences.getInstance();
-          // pref.setString("docs", jsonEncode(resp));
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (ctx) => homepage()));
-        }
-      }
-    }, (error) {
-      print("error");
-    }, parameter: parameters);
-  }
+  // docapi() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   Map<String, String> parameters = {
+  //     'clientid': "${prefs.getString("log")}",
+  //     'username': "${prefs.getString("un")}",
+  //     'password': "${prefs.getString("PS")}",
+  //   };
+  //   APIManager().apiRequest(context, API.info, (response) async {
+  //     if (response != null) {
+  //       Documents resp = response;
+  //       if (resp.isSuccess == 1) {
+  //         docdata = resp;
+  //         // SharedPreferences pref = await SharedPreferences.getInstance();
+  //         // pref.setString("docs", jsonEncode(resp));
+  //         Navigator.pushReplacement(
+  //             context, MaterialPageRoute(builder: (ctx) => homepage()));
+  //       }
+  //     }
+  //   }, (error) {
+  //     print("error");
+  //   }, parameter: parameters);
+  // }
 
-  notificationApi() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> parameters = {
-      'clientid': "${prefs.getString("log")}",
-      'username': "${prefs.getString("un")}",
-      'password': "${prefs.getString("PS")}",
-    };
-    APIManager().apiRequest(context, API.notification, (response) async {
-      if (response != null) {
-        NotificationModel resp = response;
-        if (resp.isSuccess == 1) {
-          // profileApiCall();
-          notdata = resp;
-          // SharedPreferences pref = await SharedPreferences.getInstance();
-          // pref.setString("notif", jsonEncode(resp));
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (ctx) => NotificationPage()));
-        }
-        print("success ${docdata?.data?.length}");
-      }
-    }, (error) {
-      print("error");
-    }, parameter: parameters);
-  }
+  // notificationApi() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   // Map<String, String> parameters = {
+  //   //   'clientid': "${prefs.getString("log")}",
+  //   //   'username': "${prefs.getString("un")}",
+  //   //   'password': "${prefs.getString("PS")}",
+  //   // };
+
+  //   Map<String, String> parameters = {
+  //     'clientid': "${prefs.getString("log")}",
+  //     'username': "${prefs.getString("un")}",
+  //     'password': "${prefs.getString("PS")}",
+  //   };
+
+  //   APIManager().apiRequest(context, API.notification, (response) async {
+  //     if (response != null) {
+  //       NotificationModel resp = response;
+  //       if (resp.isSuccess == 1) {
+  //         // profileApiCall();
+  //         notdata = resp;
+  //         // SharedPreferences pref = await SharedPreferences.getInstance();
+  //         // pref.setString("notif", jsonEncode(resp));
+  //         Navigator.pushReplacement(
+  //             context, MaterialPageRoute(builder: (ctx) => NotificationPage()));
+  //       }
+  //       print("success ${docdata?.data?.length}");
+  //     }
+  //   }, (error) {
+  //     print("error");
+  //   }, parameter: parameters);
+  // }
 
   savedlogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

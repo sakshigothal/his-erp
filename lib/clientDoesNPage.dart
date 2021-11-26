@@ -284,7 +284,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
             });
       }
     }, (error) {
-      print("error");
+      print(" LOGIN API ERROR ");
     }, parameter: parameters);
   }
 
@@ -306,7 +306,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
         }
       }
     }, (error) {
-      print("error");
+      print("PROFILE API ERRPR ");
     }, parameter: parameters);
   }
 

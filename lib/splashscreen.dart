@@ -24,8 +24,11 @@ class _SplashsceenState extends State<Splashsceen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 5), () async {
+    Future.delayed(Duration(seconds: 3), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.remove("un");
+      prefs.remove("PS");
 
       print("from splash screen value of client id " +
           "${prefs.getString("log")}  " +
