@@ -304,7 +304,7 @@ class _RoastedHomeState extends State<RoastedHome> {
     APIManager().apiRequest(context, API.profile, (response) async {
       if (response != null) {
         profile_main resp = response;
-        if (resp.isSuccess == 1 ) {
+        if (resp.isSuccess == 1) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
           profileData = resp;

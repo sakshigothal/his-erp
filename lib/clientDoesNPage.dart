@@ -284,6 +284,11 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
             });
       }
     }, (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('LOGIN API ERROR'),
+        ),
+      );
       print(" LOGIN API ERROR ");
     }, parameter: parameters);
   }
@@ -306,6 +311,12 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
         }
       }
     }, (error) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('PROFILE API ERROR'),
+        ),
+      );
       print("PROFILE API ERRPR ");
     }, parameter: parameters);
   }

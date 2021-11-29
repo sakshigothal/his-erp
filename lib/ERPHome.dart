@@ -47,7 +47,7 @@ class _HomepageErpState extends State<HomepageErp> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 10,right: 15),
+              padding: const EdgeInsets.only(bottom: 10, right: 15),
               child: Text(
                 txt,
                 style: TextStyle(fontSize: 20, color: Colors.white),
@@ -124,116 +124,246 @@ class _HomepageErpState extends State<HomepageErp> {
                         Divider(
                           thickness: 4,
                         ),
-                        // begins here
+
                         Material(
                           child: ListTile(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0)),
-                            selected: true,
-                            selectedTileColor: Colors.grey[300],
-                            hoverColor: Colors.red,
-                            enabled: true,
-                            title: Column(
-                              children: [
-                                Row(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0)),
+                              selected: true,
+                              selectedTileColor: Colors.grey[300],
+                              hoverColor: Colors.red,
+                              enabled: true,
+                              title: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "Agreement",
-                                      style: TextStyle(fontSize: 15),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Agreement"),
+                                        Divider(thickness: 1),
+                                        Text("Due Upto Date"),
+                                        Divider(thickness: 1),
+                                        Text("Paid Upto Date"),
+                                        Divider(thickness: 1),
+                                        Text("Overdue"),
+                                        Divider(thickness: 1),
+                                        Text("Final Balance")
+                                      ],
                                     ),
-                                    Text(
-                                      "${profileData?.tamtpay}",
-                                      style: TextStyle(fontSize: 15),
+                                    Divider(
+                                      thickness: 1,
+                                      color: Colors.red,
                                     ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Due Upto Date",
-                                      style: TextStyle(fontSize: 15),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text("${profileData?.tamtpay}"),
+                                        Divider(thickness: 1),
+                                        Text("${profileData?.tamtdue}"),
+                                        Divider(thickness: 1),
+                                        Text("${profileData?.tamtrec}"),
+                                        Divider(thickness: 1),
+                                        Text(
+                                          "${profileData?.overdue}",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color:
+                                                  "${profileData?.overdue?.substring(0, 1)}" ==
+                                                          "-"
+                                                      ? Colors.red
+                                                      : Colors.blue[900]),
+                                        ),
+                                        Divider(thickness: 1),
+                                        Text("${profileData?.tamtbalance}",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color:
+                                                    "${profileData?.tamtbalance?.substring(0, 1)}" ==
+                                                            "-"
+                                                        ? Colors.red
+                                                        : Colors.blue[900])),
+                                      ],
                                     ),
-                                    Text(
-                                      "${profileData?.tamtdue}",
-                                      style: TextStyle(fontSize: 15),
+                                    Divider(
+                                      thickness: 1,
                                     ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Paid Upto Date",
-                                      style: TextStyle(fontSize: 15),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text("100%"),
+                                        Divider(
+                                          thickness: 1,
+                                        ),
+                                        Text(calculatePer(
+                                        double.parse("${profileData?.tamtdue}"),
+                                        double.parse(
+                                            "${profileData?.tamtpay}"),"%").toString()),
+                                        Divider(
+                                          thickness: 1,
+                                        ),
+                                        Text(calculatePer(
+                                        double.parse("${profileData?.tamtrec}"),
+                                        double.parse(
+                                            "${profileData?.tamtdue}"),"%").toString()),
+                                        Divider(
+                                          thickness: 1,
+                                        ),
+                                        Text(calculatePer(
+                                        double.parse("${profileData?.overdue}"),
+                                        double.parse(
+                                            "${profileData?.tamtdue}"),"%").toString()),
+                                        Divider(
+                                          thickness: 1,
+                                        ),
+                                        Text(calculatePer(
+                                        double.parse("${profileData?.tamtbalance}"),
+                                        double.parse(
+                                            "${profileData?.tamtpay}"),"%").toString()),
+                                      ],
                                     ),
-                                    Text(
-                                      "${profileData?.tamtrec}",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Overdue",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      "${profileData?.overdue}",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color:
-                                              "${profileData?.overdue?.substring(0, 1)}" ==
-                                                      "-"
-                                                  ? Colors.red
-                                                  : Colors.blue[900]),
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  thickness: 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Final Balance",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    Text(
-                                      "${profileData?.tamtbalance}",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color:
-                                              "${profileData?.tamtbalance?.substring(0, 1)}" ==
-                                                      "-"
-                                                  ? Colors.red
-                                                  : Colors.blue[900]),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                                  ])),
                         ),
-                        // upto here
+
+                        //begins here
+                        // Material(
+                        //   child: ListTile(
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(20.0)),
+                        //     selected: true,
+                        //     selectedTileColor: Colors.grey[300],
+                        //     hoverColor: Colors.red,
+                        //     enabled: true,
+                        //     title: Column(
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Row(
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               "Agreement",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //             Text("100%"),
+                        //             Text(
+                        //               "${profileData?.tamtpay}",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         Divider(
+                        //           thickness: 1,
+                        //         ),
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               "Due Upto Date",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //             Text(calculatePer(
+                        //                 double.parse("${profileData?.tamtdue}"),
+                        //                 double.parse(
+                        //                     "${profileData?.tamtpay}")).toString()),
+                        //             Text(
+                        //               "${profileData?.tamtdue}",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         Divider(
+                        //           thickness: 1,
+                        //         ),
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               "Paid Upto Date",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //             Text(calculatePer(
+                        //                 double.parse("${profileData?.tamtrec}"),
+                        //                 double.parse(
+                        //                     "${profileData?.tamtdue}")).toString()),
+                        //             Text(
+                        //               "${profileData?.tamtrec}",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         Divider(
+                        //           thickness: 1,
+                        //         ),
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               "Overdue",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //             Text(calculatePer(
+                        //                 double.parse("${profileData?.overdue}"),
+                        //                 double.parse(
+                        //                     "${profileData?.tamtdue}")).toString()),
+                        //             Text(
+                        //               "${profileData?.overdue}",
+                        //               style: TextStyle(
+                        //                   fontSize: 15,
+                        //                   color:
+                        //                       "${profileData?.overdue?.substring(0, 1)}" ==
+                        //                               "-"
+                        //                           ? Colors.red
+                        //                           : Colors.blue[900]),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         Divider(
+                        //           thickness: 1,
+                        //         ),
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               "Final Balance",
+                        //               style: TextStyle(fontSize: 15),
+                        //             ),
+                        //             Text(calculatePer(
+                        //                 double.parse("${profileData?.tamtbalance}"),
+                        //                 double.parse(
+                        //                     "${profileData?.tamtpay}")).toString()),
+                        //             Text(
+                        //               "${profileData?.tamtbalance}",
+                        //               style: TextStyle(
+                        //                   fontSize: 15,
+                        //                   color:
+                        //                       "${profileData?.tamtbalance?.substring(0, 1)}" ==
+                        //                               "-"
+                        //                           ? Colors.red
+                        //                           : Colors.blue[900]),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        //upto here
                         Divider(
                           thickness: 4,
                         ),
@@ -871,8 +1001,7 @@ class _HomepageErpState extends State<HomepageErp> {
     );
   }
 
-
-profileApiCall() async {
+  profileApiCall() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> parameters = {
       'clientid': "${prefs.getString("log")}",
@@ -894,5 +1023,11 @@ profileApiCall() async {
     }, (error) {
       print("error");
     }, parameter: parameters);
+  }
+
+  calculatePer(double a, double b,String c) {
+    double t= (a / b * 100);
+    String a1=(t).toStringAsFixed(0)+c;
+    return a1;
   }
 }

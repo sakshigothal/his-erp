@@ -27,6 +27,8 @@ class _TableExState extends State<TableEx> {
   Sopmodel? details;
   List postResp = [];
   bool isonline = true;
+  double CumPC = 0;
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +61,7 @@ class _TableExState extends State<TableEx> {
             children: [
               GestureDetector(
                 onTap: () {
+                  CumPC = 0;
                   "${sopdata?.dataAgr}" != "null"
                       ? onepressButton()
                       : showDialog(
@@ -141,9 +144,10 @@ class _TableExState extends State<TableEx> {
                   ],
                 ),
               ),
-              GestureDetector(onTap: (){
-                FourthOnpress();
-              },
+              GestureDetector(
+                onTap: () {
+                  FourthOnpress();
+                },
                 child: Column(
                   children: [
                     showcard("TDS"),
@@ -189,13 +193,17 @@ class _TableExState extends State<TableEx> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [Text("Due "), Text("22222")],
                                 ),
-                                Divider(thickness: 1,),
+                                Divider(
+                                  thickness: 1,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [Text("Paid "), Text("22222")],
                                 ),
-                                Divider(thickness: 1,),
+                                Divider(
+                                  thickness: 1,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -213,7 +221,7 @@ class _TableExState extends State<TableEx> {
         });
   }
 
-  FourthOnpress(){
+  FourthOnpress() {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -247,13 +255,17 @@ class _TableExState extends State<TableEx> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [Text("Due "), Text("22222")],
                                 ),
-                                Divider(thickness: 1,),
+                                Divider(
+                                  thickness: 1,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [Text("Paid "), Text("22222")],
                                 ),
-                                Divider(thickness: 1,),
+                                Divider(
+                                  thickness: 1,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -372,11 +384,42 @@ class _TableExState extends State<TableEx> {
                                         Divider(
                                           thickness: 1,
                                         ),
-                                        Text(
-                                            "${sopdata?.dataAgr?[index].part2}",
-                                            style: TextStyle(
-                                                fontSize: 9,
-                                                color: Colors.black))
+                                        Row(
+                                          children: [
+                                            "${sopdata?.dataAgr?[index].amt?.substring(0, 1)}" !=
+                                                    "-"
+                                                ? Text(
+                                                    "${sopdata?.dataAgr?[index].part2} - ",
+                                                    style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.black))
+                                                : Expanded(
+                                                    child: Text(
+                                                        "${sopdata?.dataAgr?[index].part2}",
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.black)),
+                                                  ),
+                                            "${sopdata?.dataAgr?[index].amt?.substring(0, 1)}" !=
+                                                    "-"
+                                                ? Text(
+                                                    calculatePer(
+                                                                double.parse(
+                                                                    "${sopdata?.dataAgr?[index].amt}"),
+                                                                double.parse(
+                                                                    "${profileData?.tamtpay}"),
+                                                                "%")
+                                                            .toString() +
+                                                        " / $CumPC%",
+                                                    style: TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.green,
+                                                        fontWeight:
+                                                            FontWeight.bold))
+                                                : Text("")
+                                          ],
+                                        )
                                       ],
                                     )),
                                   ),
@@ -589,5 +632,12 @@ class _TableExState extends State<TableEx> {
     }, (error) {
       print("error");
     }, parameter: parameters);
+  }
+
+  calculatePer(double a, double b, String c) {
+    double t = (a / b * 100);
+    String a1 = (t).toStringAsFixed(2) + c;
+    CumPC = CumPC + t;
+    return a1;
   }
 }
