@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:erp/common/common.dart';
 import 'package:erp/models/docmodel.dart';
+import 'package:erp/models/gstmodel.dart';
 import 'package:erp/models/loginmodel.dart';
 import 'package:erp/models/notfiModel.dart';
 import 'package:erp/models/profilemain.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 import 'CICError.dart';
 
-enum API { login, temp, profile,sop,info,notification }
+enum API { login, temp, profile,sop,info,notification,gst }
 
 enum HTTPMethod { GET, POST, PUT, DELETE }
 
@@ -68,6 +69,9 @@ class APIManager {
       case API.notification:
         apiPathString = "/API_CustApp/PHPNotificationsQuery.php/";
         break;
+      case API.gst:
+        apiPathString = "/API_CustApp/GSTWorkingQuery.php/";
+        break;
       default:
         apiPathString = this.apiBaseURL();
         break;
@@ -112,6 +116,9 @@ class APIManager {
       case API.notification:
         className = 'NotificationModel';
         break;
+      case API.gst:
+        className = 'GSTModel';
+        break;
       default:
         className = 'CommonResponse';
     }
@@ -131,6 +138,8 @@ class APIManager {
       responseObj = Documents.fromJson(json);
     }else if (className == 'NotificationModel') {
       responseObj = NotificationModel.fromJson(json);
+    }else if(className == 'GSTModel'){
+      responseObj = GSTModel.fromJson(json);
     }
 
     return responseObj;

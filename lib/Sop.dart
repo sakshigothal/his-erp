@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:erp/ErpTabBar.dart';
 import 'package:erp/api/APIManager.dart';
 import 'package:erp/models/docmodel.dart';
+import 'package:erp/models/gstmodel.dart';
 import 'package:erp/models/sopmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,7 @@ import 'common/common.dart';
 import 'models/profilemain.dart';
 
 class TableEx extends StatefulWidget {
-  TableEx({
-    Key? key,
-  }) : super(key: key);
+  TableEx({Key? key}) : super(key: key);
 
   @override
   _TableExState createState() => _TableExState();
@@ -25,7 +24,8 @@ class TableEx extends StatefulWidget {
 class _TableExState extends State<TableEx> {
   profile_main? profile;
   Sopmodel? details;
-  List postResp = [];
+  GSTModel? GSTData;
+  String gstBalance = "";
   bool isonline = true;
   double CumPC = 0;
 
@@ -36,6 +36,7 @@ class _TableExState extends State<TableEx> {
     sopapi();
     setState(() {
       details = sopdata;
+      GSTData = gstdata;
     });
     isonline = false;
   }
@@ -136,7 +137,8 @@ class _TableExState extends State<TableEx> {
               ),
               GestureDetector(
                 onTap: () {
-                  ThirdOnpress();
+                  gstApi();
+                  // ThirdOnpress();
                 },
                 child: Column(
                   children: [
@@ -191,7 +193,10 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Due "), Text("22222")],
+                                  children: [
+                                    Text("Due "),
+                                    Text("${GSTData?.gstdue}")
+                                  ],
                                 ),
                                 Divider(
                                   thickness: 1,
@@ -199,7 +204,10 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Paid "), Text("22222")],
+                                  children: [
+                                    Text("Paid "),
+                                    Text("${GSTData?.TGSTAmtRec}")
+                                  ],
                                 ),
                                 Divider(
                                   thickness: 1,
@@ -207,7 +215,23 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Balance "), Text("22222")],
+                                  children: [
+                                    Text("Balance "),
+                                    Text(
+                                      // ""
+                                      getGSTbalance(
+                                              double.parse(
+                                                  "${GSTData?.gstdue}"),
+                                              double.parse(
+                                                  "${GSTData?.TGSTAmtRec}"))
+                                          .toString(),
+                                      style: TextStyle(
+                                        color: gstBalance.substring(0, 1) != "-"
+                                            ? Colors.blue[900]
+                                            : Colors.red,
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -253,7 +277,10 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Due "), Text("22222")],
+                                  children: [
+                                    Text("Due "),
+                                    Text("${GSTData?.tdsdue}")
+                                  ],
                                 ),
                                 Divider(
                                   thickness: 1,
@@ -261,7 +288,10 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Paid "), Text("22222")],
+                                  children: [
+                                    Text("Paid "),
+                                    Text("${GSTData?.tdsrec}")
+                                  ],
                                 ),
                                 Divider(
                                   thickness: 1,
@@ -269,7 +299,22 @@ class _TableExState extends State<TableEx> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: [Text("Balance "), Text("22222")],
+                                  children: [
+                                    Text("Balance "),
+                                    Text(
+                                      getGSTbalance(
+                                              double.parse(
+                                                  "${GSTData?.tdsdue}"),
+                                              double.parse(
+                                                  "${GSTData?.tdsrec}"))
+                                          .toString(),
+                                      style: TextStyle(
+                                        color: gstBalance.substring(0, 1) != "-"
+                                            ? Colors.blue[900]
+                                            : Colors.red,
+                                      ),
+                                    )
+                                  ],
                                 )
                               ],
                             ),
@@ -635,9 +680,40 @@ class _TableExState extends State<TableEx> {
   }
 
   calculatePer(double a, double b, String c) {
-    double t = (a / b * 100);
+    double t = ((a / b) * 100);
     String a1 = (t).toStringAsFixed(2) + c;
     CumPC = CumPC + t;
     return a1;
   }
+
+  gstApi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, String> parameters = {
+      'clientid': "${prefs.getString("log")}",
+      'username': "${prefs.getString("un")}",
+      'password': "${prefs.getString("PS")}",
+    };
+    APIManager().apiRequest(context, API.gst, (response) async {
+      if (response != null) {
+        GSTModel resps = response;
+        if (resps.isSuccess == 1) {
+          GSTModel gstresp = response;
+          GSTData = gstresp;
+          ThirdOnpress();
+          print(gstdata);
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("gst", jsonEncode(resps));
+        }
+      }
+    }, (error) {
+      print("error");
+    }, parameter: parameters);
+  }
+
+  getGSTbalance(double a, double b) {
+    gstBalance = (a - b).toStringAsFixed(0);
+    return gstBalance;
+  }
+
+  getdata() {}
 }
