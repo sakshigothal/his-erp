@@ -25,9 +25,14 @@ class _TableExState extends State<TableEx> {
   profile_main? profile;
   Sopmodel? details;
   GSTModel? GSTData;
+  List list = [];
+  List list2 = [];
+  List list3 = [];
   String gstBalance = "";
   bool isonline = true;
-  double CumPC = 0;
+  double CumPC = 0.00;
+  double sCumPC = 0;
+  String PC = '';
 
   @override
   void initState() {
@@ -454,15 +459,16 @@ class _TableExState extends State<TableEx> {
                                                                     "${sopdata?.dataAgr?[index].amt}"),
                                                                 double.parse(
                                                                     "${profileData?.tamtpay}"),
-                                                                "%")
+                                                                "% - / ")
                                                             .toString() +
-                                                        " / $CumPC%",
+                                                        list3[index]+"%",
                                                     style: TextStyle(
                                                         fontSize: 11,
                                                         color: Colors.green,
                                                         fontWeight:
                                                             FontWeight.bold))
                                                 : Text("")
+                                            // Text("${list2[index]}")
                                           ],
                                         )
                                       ],
@@ -649,6 +655,7 @@ class _TableExState extends State<TableEx> {
           profileData = resp;
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setString("profile", jsonEncode(resp));
+          getdata();
         }
       }
     }, (error) {
@@ -668,10 +675,18 @@ class _TableExState extends State<TableEx> {
         Sopmodel resps = response;
         if (resps.isSuccess == 1) {
           sopdata = resps;
-          print(sopdata);
-
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setString("sop", jsonEncode(resps));
+          getdata();
+
+          // final vlist = jsonDecode(resps.dataAgr.toString());
+
+          // List vlist = json
+          //     .decode(response)['dataAgr']
+          //     .map((data) => Sopmodel.fromJson(data))
+          //     .toList();
+          print("check vlist --->");
+          // print(vlist);
         }
       }
     }, (error) {
@@ -715,5 +730,40 @@ class _TableExState extends State<TableEx> {
     return gstBalance;
   }
 
-  getdata() {}
+  getdata() {
+    print('entering getdata() method');
+    // CumPC = 0;
+    for (var i = 0; i < sopdata!.dataAgr!.length; i++) {
+
+      list.add(sopdata!.dataAgr![i].amt);
+
+      if ("${sopdata?.dataAgr?[i].amt?.substring(0, 1)}" != "-") {
+        CumPC = (double.parse("${list[i]}") /
+            double.parse("${profileData?.tamtpay}") *
+            100);
+
+            sCumPC= sCumPC+ CumPC;
+      }
+      list2.add(CumPC);
+      list3.add(sCumPC.toStringAsFixed(2));
+      
+      // PC = ((double.parse("${list[i]}") /
+      //             double.parse("${profileData?.tamtpay}")) *
+      //         100)
+      //     .toStringAsFixed(2);
+      // print('PC is ' + i.toStringAsFixed(0) + ' -->' + PC);
+
+    }
+    print("list is $list");
+    print(" list2 is $list2");
+    print("list3 is $list3");
+    // CumPC = CumPC + (double.parse("${list[i]}") /
+    //           double.parse("${profileData?.tamtpay}")) *
+    //       100;
+    // sCumPC = CumPC.toStringAsFixed(2);
+    // list2.add(PC + '/ '+ sCumPC);
+    // list2.add(PC);
+  }
 }
+  // }
+

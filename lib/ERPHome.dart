@@ -207,7 +207,7 @@ class _HomepageErpState extends State<HomepageErp> {
                                         Text(calculatePer(
                                         double.parse("${profileData?.tamtdue}"),
                                         double.parse(
-                                            "${profileData?.tamtpay}"),"%").toString()),
+                                            "${profileData?.tamtpay}".toString()),"%")),
                                         Divider(
                                           thickness: 1,
                                         ),
@@ -587,7 +587,7 @@ class _HomepageErpState extends State<HomepageErp> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 "${profileData?.NOCDATE}" == "00/00/00"
-                                    ? Text("N/A")
+                                    ? Text("N/A".toString())
                                     : Text("${profileData?.NOCDATE}"),
                               ],
                             ),

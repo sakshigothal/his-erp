@@ -114,7 +114,7 @@ class profile_main {
     this.AGREE_DT = json["AGREE_DT"];
     this.REGDT = json["REGDT"];
     this.POSSESS_DT = json["POSSESS_DT"];
-    this.OCDATE = json["OCDATE"];
+    this.OCDATE = json["OCDATE"] ;
     this.UnreadNotifications=json["UnreadNotifications"];
 
   }

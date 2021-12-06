@@ -1,23 +1,25 @@
 class GSTModel {
+
+  String? sSGSTAmt;
+  String? sCGSTAmt;
+  int? TGSTAmtRec;
+  String? gstdue;
+  int? tdsdue;
+  int? tdsrec;
+  int? isSuccess;
+  String? message;
+
   GSTModel({
-    required this.sSGSTAmt,
-    required this.sCGSTAmt,
-    required this.TGSTAmtRec,
-    required this.gstdue,
-    required this.tdsdue,
-    required this.tdsrec,
-    required this.isSuccess,
-    required this.message,
+    this.sSGSTAmt,
+    this.sCGSTAmt,
+    this.TGSTAmtRec,
+    this.gstdue,
+    this.tdsdue,
+    this.tdsrec,
+    this.isSuccess,
+    this.message,
   });
-  late final String sSGSTAmt;
-  late final String sCGSTAmt;
-  late final int TGSTAmtRec;
-  late final String gstdue;
-  late final int tdsdue;
-  late final int tdsrec;
-  late final int isSuccess;
-  late final String message;
-  
+    
   GSTModel.fromJson(Map<String, dynamic> json){
     sSGSTAmt = json['sSGSTAmt'];
     sCGSTAmt = json['sCGSTAmt'];

@@ -176,6 +176,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
 
                                 CheckInternet();
                                 loginApiCall();
+                                print("client id is $gClientID");
                               },
                               child: Text("LOGIN",
                                   style: GoogleFonts.titilliumWeb(
@@ -286,7 +287,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
     }, (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('LOGIN API ERROR'),
+          content: Text('Please try again'),
         ),
       );
       print(" LOGIN API ERROR ");
@@ -302,7 +303,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
     APIManager().apiRequest(context, API.profile, (response) async {
       if (response != null) {
         profile_main resp = response;
-        if (resp.isSuccess == 1) {
+        if (resp.isSuccess == 1 ) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
           profileData = resp;

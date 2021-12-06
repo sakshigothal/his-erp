@@ -166,6 +166,7 @@ class _RoastedHomeState extends State<RoastedHome> {
 
                                 CheckInternet();
                                 loginApiCall();
+                                print("username is $gUserName");
                               },
                               child: Text("LOGIN",
                                   style: GoogleFonts.titilliumWeb(
@@ -237,8 +238,8 @@ class _RoastedHomeState extends State<RoastedHome> {
             builder: (context) {
               return AlertDialog(
                   // context: context,
-                  title: Text("${loginData?.message}"),
-                  content: Text("Last Login was on ${loginData?.lastLogin}"),
+                  title: Text("${loginData?.message}".toString()),
+                  content: Text("Last Login was on ${loginData?.lastLogin}".toString()),
                   actions: [
                     DialogButton(
                       child: Text(
@@ -247,6 +248,8 @@ class _RoastedHomeState extends State<RoastedHome> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
+              //           Navigator.pushReplacement(context,
+              // MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
                         profileApiCall();
                         // sopapi();
                         // docapi();
@@ -255,7 +258,7 @@ class _RoastedHomeState extends State<RoastedHome> {
                     )
                   ]);
             });
-      } else if (resp.isSuccess == 0) {
+      } else if (resp.isSuccess !=1) {
         loginData = resp;
         showDialog(
             context: context,
@@ -278,21 +281,22 @@ class _RoastedHomeState extends State<RoastedHome> {
     }, (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('LOGIN API ERROR'),
+          backgroundColor: Colors.red,
+          content: Text('Please try again'),
         ),
       );
       print("Login API Failed - error");
     }, parameter: parameters);
   }
 
-  profileApiCall() async {
+  profileApiCall() {
     // Map<String, String> parameters = {
     //   'clientid': gClientID,
     //   'username': gUserName,
     //   'password': gPassword,
     // };
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
 
     Map<String, String> parameters = {
       'clientid': gClientID,
@@ -308,18 +312,18 @@ class _RoastedHomeState extends State<RoastedHome> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
           profileData = resp;
-          // SharedPreferences pref = await SharedPreferences.getInstance();
-          // pref.setString("profile", jsonEncode(resp));
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          pref.setString("profile", jsonEncode(resp));
         }
       }
     }, (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('PROFILE API ERROR'),
+         SnackBar(
+          content: Text('PROFILE API ERROR $error'),
         ),
       );
 
-      print("PROFILE API ERROR ");
+      print("PROFILE API ERROR $error");
     }, parameter: parameters);
   }
 

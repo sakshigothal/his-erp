@@ -6,8 +6,6 @@ import 'package:erp/Profile/notifications.dart';
 import 'package:erp/api/APIManager.dart';
 import 'package:erp/common/common.dart';
 import 'package:erp/document/documentfile.dart';
-
-import 'package:erp/loginscreen.dart';
 import 'package:erp/models/docmodel.dart';
 import 'package:erp/models/notfiModel.dart';
 import 'package:erp/models/profilemain.dart';
@@ -15,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Sop.dart';
 import 'package:badges/badges.dart';
-
 import 'splashscreen.dart';
 
 class homepage extends StatefulWidget {
@@ -50,7 +47,6 @@ class _homepageState extends State<homepage>
   ];
   static const colorizeTextStyle = TextStyle(
     fontSize: 12.0,
-    // fontFamily: 'Horizon',
   );
 
   @override
@@ -134,7 +130,8 @@ class _homepageState extends State<homepage>
               ),
             ],
           ),
-          actions: [NotificationBadge()],
+          actions: [
+            NotificationBadge(),],
           backgroundColor: Colors.white,
         ),
         body: Container(
@@ -259,7 +256,7 @@ class _homepageState extends State<homepage>
         animationDuration: Duration(milliseconds: 300),
         animationType: BadgeAnimationType.slide,
         badgeContent: Text(
-          "${profile?.UnreadNotifications}",
+          "${profile?.UnreadNotifications}".toString(),
           style: TextStyle(color: Colors.white),
         ),
         child: IconButton(
@@ -343,7 +340,4 @@ class _homepageState extends State<homepage>
       print("error");
     }, parameter: parameters);
   }
-
-  
-
 }
