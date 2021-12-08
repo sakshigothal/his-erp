@@ -112,7 +112,10 @@ class _PdfurlState extends State<Pdfurl> {
                       colors: colorizeColors,
                     ),
                   ]),
-                  Text(widget.documentName,style: TextStyle(color: Colors.green,fontSize: 14),)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2,bottom: 2),
+                    child: Text(widget.documentName,style: TextStyle(color: Colors.green,fontSize: 11),),
+                  )
                 ],
               ),
             ),

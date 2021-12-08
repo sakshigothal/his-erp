@@ -39,6 +39,7 @@ class _TableExState extends State<TableEx> {
     super.initState();
     profileApiCall();
     sopapi();
+    gstApi();
     setState(() {
       details = sopdata;
       GSTData = gstdata;
@@ -58,112 +59,116 @@ class _TableExState extends State<TableEx> {
 
   @override
   Widget build(BuildContext context) {
-    return isonline==true ? Scaffold(
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  CumPC = 0;
-                  "${sopdata?.dataAgr}" != "null"
-                      ? onepressButton()
-                      : showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    "Not Yet Due...",
-                                    style: TextStyle(color: Colors.red),
-                                    textAlign: TextAlign.center,
+    return isonline == true
+        ? Scaffold(
+            backgroundColor: Colors.white,
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      CumPC = 0;
+                    sopdata != null &&  "${sopdata?.dataAgr}" != "null" 
+                          ? onepressButton()
+                          : showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text(
+                                        "Not Yet Due...",
+                                        style: TextStyle(color: Colors.red),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("OK"))
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"))
-                                ],
-                              ),
-                            );
-                          });
-                },
-                child: Column(
-                  children: [
-                    showcard(
-                      "Agreement",
+                                );
+                              });
+                    },
+                    child: Column(
+                      children: [
+                        showcard(
+                          "Agreement",
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                child: Column(
-                  children: [
-                    showcard(
-                      "Other Charges",
+                  ),
+                  GestureDetector(
+                    child: Column(
+                      children: [
+                        showcard(
+                          "Other Charges",
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                onTap: () {
-                  "${sopdata?.dataOthchg}" != "null"
-                      ? secondPress()
-                      : showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    "Not Yet Due...",
-                                    style: TextStyle(color: Colors.red),
-                                    textAlign: TextAlign.center,
+                    onTap: () {
+                      "${sopdata?.dataOthchg}" != "null" && sopdata != null
+                          ? secondPress()
+                          : showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text(
+                                        "Not Yet Due...",
+                                        style: TextStyle(color: Colors.red),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("OK"))
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("OK"))
-                                ],
-                              ),
-                            );
-                          });
-                },
+                                );
+                              });
+                    },
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // gstApi();
+                    sopdata != null ?  ThirdOnpress() : Center( child:  CircularProgressIndicator(),);
+                    },
+                    child: Column(
+                      children: [
+                        showcard("GST"),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                     sopdata != null ? FourthOnpress() : Center(child: CircularProgressIndicator());
+                    },
+                    child: Column(
+                      children: [
+                        showcard("TDS"),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () {
-                  gstApi();
-                  // ThirdOnpress();
-                },
-                child: Column(
-                  children: [
-                    showcard("GST"),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  FourthOnpress();
-                },
-                child: Column(
-                  children: [
-                    showcard("TDS"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        )) : Center(child: CircularProgressIndicator());
+            ))
+        : Center(child: CircularProgressIndicator());
   }
 
   ThirdOnpress() {
@@ -461,7 +466,8 @@ class _TableExState extends State<TableEx> {
                                                                     "${profileData?.tamtpay}"),
                                                                 "% - / ")
                                                             .toString() +
-                                                        list3[index]+"%",
+                                                        list3[index] +
+                                                        "%",
                                                     style: TextStyle(
                                                         fontSize: 11,
                                                         color: Colors.green,
@@ -714,7 +720,10 @@ class _TableExState extends State<TableEx> {
         if (resps.isSuccess == 1) {
           GSTModel gstresp = response;
           GSTData = gstresp;
-          ThirdOnpress();
+          // if (sopdata != null) {
+          //   ThirdOnpress();
+          // }
+
           print(gstdata);
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setString("gst", jsonEncode(resps));
@@ -734,7 +743,6 @@ class _TableExState extends State<TableEx> {
     print('entering getdata() method');
     // CumPC = 0;
     for (var i = 0; i < sopdata!.dataAgr!.length; i++) {
-
       list.add(sopdata!.dataAgr![i].amt);
 
       if ("${sopdata?.dataAgr?[i].amt?.substring(0, 1)}" != "-") {
@@ -742,11 +750,11 @@ class _TableExState extends State<TableEx> {
             double.parse("${profileData?.tamtpay}") *
             100);
 
-            sCumPC= sCumPC+ CumPC;
+        sCumPC = sCumPC + CumPC;
       }
       list2.add(CumPC);
       list3.add(sCumPC.toStringAsFixed(2));
-      
+
       // PC = ((double.parse("${list[i]}") /
       //             double.parse("${profileData?.tamtpay}")) *
       //         100)
@@ -765,5 +773,11 @@ class _TableExState extends State<TableEx> {
     // list2.add(PC);
   }
 }
+
   // }
+
+
+ Widget progressBar(){
+return Center(child: CircularProgressIndicator());
+}
 
