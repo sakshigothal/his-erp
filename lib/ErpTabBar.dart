@@ -26,6 +26,7 @@ class _homepageState extends State<homepage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   profile_main? profile;
+  bool isloading = false;
    var data;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,6 +61,7 @@ class _homepageState extends State<homepage>
     });
     _tabController = TabController(length: 3, vsync: this);
     print("${profile?.UnreadNotifications}");
+    isloading=true;
   }
 
   void dispose() {
@@ -69,7 +71,7 @@ class _homepageState extends State<homepage>
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return isloading==true ? Scaffold(
         appBar: AppBar(
           leading: PopupMenuButton(
             child: Image.asset(
@@ -247,7 +249,7 @@ class _homepageState extends State<homepage>
                 ]),
               ),
             ])),
-    );
+    ) : Center(child: CircularProgressIndicator(),);
   }
 
   Widget NotificationBadge() {

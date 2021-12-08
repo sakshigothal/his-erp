@@ -29,7 +29,7 @@ class _TableExState extends State<TableEx> {
   List list2 = [];
   List list3 = [];
   String gstBalance = "";
-  bool isonline = true;
+  bool isonline = false;
   double CumPC = 0.00;
   double sCumPC = 0;
   String PC = '';
@@ -43,7 +43,7 @@ class _TableExState extends State<TableEx> {
       details = sopdata;
       GSTData = gstdata;
     });
-    isonline = false;
+    isonline = true;
   }
 
   String? data;
@@ -58,7 +58,7 @@ class _TableExState extends State<TableEx> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isonline==true ? Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -163,7 +163,7 @@ class _TableExState extends State<TableEx> {
               ),
             ],
           ),
-        ));
+        )) : Center(child: CircularProgressIndicator());
   }
 
   ThirdOnpress() {
@@ -200,7 +200,7 @@ class _TableExState extends State<TableEx> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Due "),
-                                    Text("${GSTData?.gstdue}")
+                                    Text("${GSTData?.gstdue}".split(".").first)
                                   ],
                                 ),
                                 Divider(

@@ -29,6 +29,7 @@ class _DownloadFileState extends State<DownloadFile> {
   Documents? doc;
   profile_main? profile;
   var dio = Dio();
+  bool isloading=false;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _DownloadFileState extends State<DownloadFile> {
     doc = docdata;
     docapi();
     profile = profileData;
+    isloading=true;
   }
 
   static void downloadCallback(
@@ -68,7 +70,7 @@ class _DownloadFileState extends State<DownloadFile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isloading==true ? Scaffold(
         body: Container(
             color: Colors.white,
             child: Column(children: [
@@ -92,7 +94,7 @@ class _DownloadFileState extends State<DownloadFile> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (ctx) => Pdfurl()));
+                                      builder: (ctx) => Pdfurl(documentName: docdata?.data?[index].docName,)));
                             },
                             title: Text(
                               "${doc?.data?[index].docName}",
@@ -113,6 +115,7 @@ class _DownloadFileState extends State<DownloadFile> {
                                   var respp =
                                       await dio.download(path, outputPath);
                                   print("Status Code ${respp.statusCode}");
+                                  print("link is ${doc?.data?[index].docLink}");
                                   if (respp.statusCode == 200) {
                                     final _result =
                                         await OpenFile.open(outputPath);
@@ -121,7 +124,7 @@ class _DownloadFileState extends State<DownloadFile> {
                                     print("Error opening file");
                                   }
                                 } catch (e) {
-                                  print("Exception $e");
+                                  print("Exception is $e");
                                 }
                               },
                               icon: Icon(Icons.download, color: Colors.white),
@@ -129,7 +132,7 @@ class _DownloadFileState extends State<DownloadFile> {
                           ),
                         ));
                   }),
-            ])));
+            ]))) : Center(child:CircularProgressIndicator());
   }
 
   Future<void> _prepareSaveDir() async {
@@ -189,7 +192,7 @@ class _DownloadFileState extends State<DownloadFile> {
         print("success ${docdata?.data?.length}");
       }
     }, (error) {
-      print("error");
+      print("documet error is $error");
     }, parameter: parameters);
   }
 }

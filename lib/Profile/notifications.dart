@@ -24,6 +24,7 @@ class _NotificationPageState extends State<NotificationPage> {
   NotificationModel? not;
   profile_main? profile;
   Map<String, String> parameters={};
+  bool isloading=false;
   var data;
   loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,6 +56,7 @@ class _NotificationPageState extends State<NotificationPage> {
 setData();
     profileApiCall();
     not = notdata;
+    isloading=true;
   }
 
   @override
@@ -133,7 +135,7 @@ setData();
         backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.white,
-      body: Container(
+      body: isloading ==true? Container(
         child: ListView.separated(
           itemCount: int.parse("${not?.docCount}"),
           itemBuilder: (context, index) {
@@ -189,7 +191,7 @@ setData();
             );
           },
         ),
-      ),
+      ) : Center(child: CircularProgressIndicator(),),
     );
   }
 

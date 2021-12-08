@@ -136,6 +136,7 @@ class Documentsex extends StatefulWidget {
 class _DocumentsexState extends State<Documentsex> {
   // List<Document> pdf = [];
   profile_main? profile;
+  bool isloading=false;
   Documents? doc;
   late String _localPath;
   @override
@@ -145,6 +146,7 @@ class _DocumentsexState extends State<Documentsex> {
     FlutterDownloader.registerCallback(downloadCallback);
     doc = docdata;
     profile = profileData;
+    isloading=true;
   }
 
   static void downloadCallback(
@@ -181,7 +183,7 @@ class _DocumentsexState extends State<Documentsex> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isloading== true? Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -215,7 +217,7 @@ class _DocumentsexState extends State<Documentsex> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (ctx) => Pdfurl()));
+                                        builder: (ctx) => Pdfurl(documentName: docdata?.data?[index].docName,)));
                               },
                               title: Text("${doc?.data?[index].docName}"),
                               trailing: IconButton(
@@ -251,7 +253,7 @@ class _DocumentsexState extends State<Documentsex> {
           ),
         ),
       ),
-    );
+    ) : Center(child:CircularProgressIndicator());
   }
 
   Future<String> localPath() async {

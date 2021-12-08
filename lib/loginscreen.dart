@@ -200,7 +200,7 @@ class _RoastedHomeState extends State<RoastedHome> {
                                   child: Image.asset("assets/logo.png")),
                             ),
                             SizedBox(height: 20),
-                            Text("Release 1.3.0")
+                            Text("Release 1.4.0")
                           ],
                         ),
                       )),
