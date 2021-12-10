@@ -177,39 +177,39 @@ class _PdfurlState extends State<Pdfurl> {
 
 
 
-  docapi() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, String> parameters = {
-      'clientid': "${prefs.getString("log")}",
-      'username': "${prefs.getString("un")}",
-      'password': "${prefs.getString("PS")}",
-    };
-// common.gClientID= prefs.getString("log")!;
-//         common.gUserName=prefs.getString("un")!;
-//         common.gPassword=prefs.getString("PS")!;
-
+//   docapi() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
 //     Map<String, String> parameters = {
-//       'clientid': common.gClientID,
-//       'username': common.gPassword,
-//       'password': common.gPassword,
+//       'clientid': "${prefs.getString("log")}",
+//       'username': "${prefs.getString("un")}",
+//       'password': "${prefs.getString("PS")}",
 //     };
+// // common.gClientID= prefs.getString("log")!;
+// //         common.gUserName=prefs.getString("un")!;
+// //         common.gPassword=prefs.getString("PS")!;
+
+// //     Map<String, String> parameters = {
+// //       'clientid': common.gClientID,
+// //       'username': common.gPassword,
+// //       'password': common.gPassword,
+// //     };
 
 
 
-    APIManager().apiRequest(context, API.info, (response) async {
-      if (response != null) {
-        Documents resp = response;
-        if (resp.isSuccess == 1) {
-          docdata = resp;
-          SharedPreferences pref = await SharedPreferences.getInstance();
-          pref.setString("docs", jsonEncode(resp));
-          // Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (ctx) => DownloadFile()));
-        }
-        print("success ${docdata?.data?.length}");
-      }
-    }, (error) {
-      print("error");
-    }, parameter: parameters);
-  }
+//     APIManager().apiRequest(context, API.info, (response) async {
+//       if (response != null) {
+//         Documents resp = response;
+//         if (resp.isSuccess == 1) {
+//           docdata = resp;
+//           SharedPreferences pref = await SharedPreferences.getInstance();
+//           pref.setString("docs", jsonEncode(resp));
+//           // Navigator.pushReplacement(
+//           //     context, MaterialPageRoute(builder: (ctx) => DownloadFile()));
+//         }
+//         print("success ${docdata?.data?.length}");
+//       }
+//     }, (error) {
+//       print("error");
+//     }, parameter: parameters);
+//   }
 }

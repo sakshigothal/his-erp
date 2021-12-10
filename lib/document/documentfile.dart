@@ -89,7 +89,7 @@ class _DownloadFileState extends State<DownloadFile> {
                             selectedTileColor: Colors.blue[900],
                             hoverColor: Colors.red,
                             enabled: true,
-                            onTap: () async {
+                            onTap: () async {                              
                               common.docLink = "${doc?.data?[index].docLink}";
                               Navigator.push(
                                   context,
@@ -115,7 +115,7 @@ class _DownloadFileState extends State<DownloadFile> {
                                   var respp =
                                       await dio.download(path, outputPath);
                                   print("Status Code ${respp.statusCode}");
-                                  print("link is ${doc?.data?[index].docLink}");
+                                  print("link is ${respp.headers}");
                                   if (respp.statusCode == 200) {
                                     final _result =
                                         await OpenFile.open(outputPath);
@@ -193,6 +193,33 @@ class _DownloadFileState extends State<DownloadFile> {
       }
     }, (error) {
       print("documet error is $error");
-    }, parameter: parameters);
+    }, parameter: parameters,
+    );
+  }
+
+
+
+  showPopUp() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Opening new window in default web browser"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    // launch("https://his-erp.com/${common.docLink}");
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok")),
+              TextButton(
+                  onPressed: () {
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (ctx) => homepage()));
+                  },
+                  child: Text("Cancel"))
+            ],
+          );
+        });
   }
 }
