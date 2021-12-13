@@ -169,6 +169,7 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
                                 prefs.setString("log", clinetid.text);
                                 prefs.setString("un", email.text);
                                 prefs.setString("PS", psscode.text);
+                               
 
                                 gClientID = prefs.getString("log");
                                 gUserName = prefs.getString("un");
@@ -176,7 +177,9 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
 
                                 CheckInternet();
                                 loginApiCall();
+                                
                                 print("client id is $gClientID");
+                                print("logo image is- ${prefs.getString("img")}");
                               },
                               child: Text("LOGIN",
                                   style: GoogleFonts.titilliumWeb(
@@ -224,6 +227,8 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
   }
 
   loginApiCall() async {
+    SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
     Map<String, String> parameters = {
       'clientid': gClientID,
       'username': gUserName,
@@ -236,9 +241,12 @@ class _ClientDoesNotExitState extends State<ClientDoesNotExit> {
 
       if (resp.isSuccess == 1) {
         // userSetUp();
+
         LoginModel llresp = response;
+         
         loginData = llresp;
         print("Alert Dialog response is ${loginData}");
+        prefs.setString("img", "${loginData?.logoimage}");
         showDialog(
             context: context,
             builder: (context) {

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'HIS-ERP',
       theme: ThemeData(
         canvasColor: Colors.transparent,
         primarySwatch: Colors.indigo,

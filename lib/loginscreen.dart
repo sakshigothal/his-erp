@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:erp/Profile/notifications.dart';
@@ -31,6 +32,7 @@ class _RoastedHomeState extends State<RoastedHome> {
     Colors.yellow,
     Colors.red,
   ];
+  // late Uint8List bytes;
   var spdata;
   var gClientID, gUserName, gPassword;
   bool visible = true;
@@ -44,11 +46,14 @@ class _RoastedHomeState extends State<RoastedHome> {
 
   LoginModel? loginData;
   var last_login;
-  @override
+  var logoImage;
+  Uint8List? imgbytes;
+
   void initState() {
     super.initState();
     CheckInternet();
     savedlogin();
+    getImage();
   }
 
   @override
@@ -72,12 +77,12 @@ class _RoastedHomeState extends State<RoastedHome> {
                     child: Container(
                       height: 150,
                       width: 150,
-                      child: Image(
-                        fit: BoxFit.fill,
-                        image: AssetImage("assets/his2.png"),
+                      child:  imgbytes != null
+                                ? Image.memory(imgbytes!)
+                                : SizedBox(),
+
                       ),
                     ),
-                  ),
                   AnimatedTextKit(animatedTexts: [
                     ColorizeAnimatedText(
                       'Premise Owners Dashboard',
@@ -166,6 +171,8 @@ class _RoastedHomeState extends State<RoastedHome> {
 
                                 CheckInternet();
                                 loginApiCall();
+
+                                print("${loginData?.lastLogin}");
                                 print("username is $gUserName");
                               },
                               child: Text("LOGIN",
@@ -181,6 +188,11 @@ class _RoastedHomeState extends State<RoastedHome> {
                             SizedBox(
                               height: 30,
                             ),
+                            //  bytes != null? Image.memory(bytes) :SizedBox(),
+                            // imgbytes != null
+                            //     ? Image.memory(imgbytes!)
+                            //     : SizedBox(),
+
                             Divider(),
                             Text("Powered by"),
                             // size
@@ -213,9 +225,8 @@ class _RoastedHomeState extends State<RoastedHome> {
     );
   }
 
-  loginApiCall() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  loginApiCall() {
+    
     Map<String, String> parameters = {
       'clientid': gClientID,
       'username': gUserName,
@@ -232,14 +243,19 @@ class _RoastedHomeState extends State<RoastedHome> {
 
         LoginModel llresp = response;
         loginData = llresp;
+        // Uint8List bytes = base64.decode("${loginData?.logoimage}");
+        
         print("**Alert Dialog response is ${loginData}");
+        print("${loginData?.logoimage}");
+
         showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
                   // context: context,
                   title: Text("${loginData?.message}".toString()),
-                  content: Text("Last Login was on ${loginData?.lastLogin}".toString()),
+                  content: Text(
+                      "Last Login was on ${loginData?.lastLogin}".toString()),
                   actions: [
                     DialogButton(
                       child: Text(
@@ -248,8 +264,8 @@ class _RoastedHomeState extends State<RoastedHome> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-              //           Navigator.pushReplacement(context,
-              // MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
+                        //           Navigator.pushReplacement(context,
+                        // MaterialPageRoute(builder: (BuildContext ctx) => homepage()));
                         profileApiCall();
                         // sopapi();
                         // docapi();
@@ -258,7 +274,7 @@ class _RoastedHomeState extends State<RoastedHome> {
                     )
                   ]);
             });
-      } else if (resp.isSuccess !=1) {
+      } else if (resp.isSuccess != 1) {
         loginData = resp;
         showDialog(
             context: context,
@@ -290,14 +306,6 @@ class _RoastedHomeState extends State<RoastedHome> {
   }
 
   profileApiCall() {
-    // Map<String, String> parameters = {
-    //   'clientid': gClientID,
-    //   'username': gUserName,
-    //   'password': gPassword,
-    // };
-
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-
     Map<String, String> parameters = {
       'clientid': gClientID,
       'username': email.text,
@@ -318,7 +326,7 @@ class _RoastedHomeState extends State<RoastedHome> {
       }
     }, (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
+        SnackBar(
           content: Text('PROFILE API ERROR $error'),
         ),
       );
@@ -431,5 +439,17 @@ class _RoastedHomeState extends State<RoastedHome> {
         )
       ]).show();
     }
+  }
+
+  getImage() async {
+    SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+    logoImage=prefs.getString("img");
+    print("image is ${prefs.getString("img")}");
+    setState(() {
+          // img = loginData!.logoimage;
+          
+          imgbytes = Base64Decoder().convert("${prefs.getString("img")}");
+        });
   }
 }
